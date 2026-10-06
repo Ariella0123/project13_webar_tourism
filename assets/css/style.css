@@ -1,0 +1,44 @@
+:root {
+    --primary-color: #0d6efd;
+    --dark-bg: #121212;
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.hero-section {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://picsum.photos/1920/1080?nature') no-repeat center center/cover;
+    color: #ffffff;
+    padding: 100px 0;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* AR Overlay UI UI样式 */
+#ar-overlay {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.75);
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+}
+
+.ar-status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    background-color: #198754;
+    color: #fff;
+}
