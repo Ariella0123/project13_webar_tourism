@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 define('APP_NAME', 'AR Tourism Explorer');
 define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'ar_tourism');
-define('DB_USER', 'root');
-define('DB_PASS', '1234');
+define('DB_NAME', 'synergy1_yuxuan_project13_webar_tourism');
+define('DB_USER', 'synergy1_yenping');
+define('DB_PASS', 'R.zb0ZwEuGZ}*fW2');
 define('PORT', 3307);
 define('APP_ROOT', dirname(__DIR__));
 
