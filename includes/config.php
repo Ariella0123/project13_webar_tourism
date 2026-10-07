@@ -1,28 +1,23 @@
 <?php
-// 开启 Session
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 
-// 基础配置
+declare(strict_types=1);
+
 define('APP_NAME', 'AR Tourism Explorer');
-define('DB_HOST', 'localhost');
+define('DB_HOST', '127.0.0.1');
 define('DB_NAME', 'ar_tourism');
 define('DB_USER', 'root');
 define('DB_PASS', '1234');
-define('PORT', '3307');
+define('PORT', 3307);
+define('APP_ROOT', dirname(__DIR__));
 
-// 自动计算当前 Base URL
-$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
-$host = $_SERVER['HTTP_HOST'];
-$script_name = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
-$base_url = rtrim($protocol . "://" . $host . $script_name, '/');
-// 处理子目录层级
-$base_url = preg_replace('/\/admin.*$/', '', $base_url);
-$base_url = preg_replace('/\/api.*$/', '', $base_url);
-define('BASE_URL', rtrim($base_url, '/'));
+$scriptName = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
+$base = preg_replace('#/(admin|api)(/.*)?$#', '', $scriptName) ?: '';
+define('BASE_URL', rtrim($base, '/'));
+define('UPLOAD_DIR', APP_ROOT . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'uploads');
+define('TARGET_DIR', APP_ROOT . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'ar-targets');
 
-// 文件上传路径
-define('UPLOAD_PATH', __DIR__ . '/../assets/uploads/');
-define('TARGET_PATH', __DIR__ . '/../assets/ar-targets/');
-?>
+date_default_timezone_set('Asia/Kuala_Lumpur');
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax', 'secure' => isset($_SERVER['HTTPS'])]);
+    session_start();
+}

@@ -1,39 +1,26 @@
 <?php
-require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/includes/database.php';
-
-$pdo = Database::getInstance();
-
-// 查询热门目的地
-$destStmt = $pdo->query("SELECT * FROM destinations WHERE status = 'active' LIMIT 6");
-$destinations = $destStmt->fetchAll();
+require_once __DIR__ . '/includes/functions.php';
+$pageTitle = 'Discover More';
+try {
+    $destinations = db()->query("SELECT * FROM destinations WHERE status='active' ORDER BY created_at DESC LIMIT 3")->fetchAll();
+    $attractions = db()->query("SELECT a.*, d.name destination_name FROM attractions a JOIN destinations d ON d.id=a.destination_id WHERE a.status='active' ORDER BY a.display_order,a.created_at DESC LIMIT 6")->fetchAll();
+} catch (Throwable $error) {
+    $destinations = [
+        ['name' => 'Heritage District', 'slug' => 'heritage-district', 'location' => 'Demo City', 'short_description' => 'Stories, architecture and living culture.'],
+        ['name' => 'Nature Escape', 'slug' => 'nature-escape', 'location' => 'Demo City', 'short_description' => 'Green trails and open skies.'],
+        ['name' => 'Cultural Village', 'slug' => 'cultural-village', 'location' => 'Demo City', 'short_description' => 'Crafts, food and local traditions.'],
+    ];
+    $attractions = [
+        ['name' => 'Heritage Museum', 'slug' => 'heritage-museum', 'destination_name' => 'Heritage District', 'short_description' => 'A hands-on journey through local history.', 'main_image' => ''],
+        ['name' => 'Forest Lookout', 'slug' => 'forest-lookout', 'destination_name' => 'Nature Escape', 'short_description' => 'A panoramic nature viewpoint.', 'main_image' => ''],
+        ['name' => 'Crafts Market', 'slug' => 'crafts-market', 'destination_name' => 'Cultural Village', 'short_description' => 'Meet makers and discover handmade treasures.', 'main_image' => ''],
+    ];
+}
+require __DIR__ . '/includes/header.php';
 ?>
-
-<!-- Hero 区域 -->
-<div class="hero-section text-center">
-    <div class="container">
-        <h1 class="display-4 fw-bold mb-3">Explore Cultural Heritage in AR</h1>
-        <p class="lead mb-4">Scan tourism posters or physical landmarks to unlock interactive 3D panels, rich details, and videos.</p>
-        <a href="<?php echo BASE_URL; ?>/ar.php" class="btn btn-primary btn-lg shadow"><i class="fa-solid fa-camera me-2"></i>Start AR Experience</a>
-    </div>
-</div>
-
-<!-- 推荐目的地列表 -->
-<div class="container my-5">
-    <h2 class="text-center mb-4"><i class="fa-solid fa-compass me-2"></i>Featured Destinations</h2>
-    <div class="row g-4">
-        <?php foreach ($destinations as $dest): ?>
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <img src="<?php echo $dest['cover_image'] ? BASE_URL . '/' . sanitize($dest['cover_image']) : 'https://picsum.photos/400/250'; ?>" class="card-img-top" alt="<?php echo sanitize($dest['name']); ?>">
-                    <div class="card-body">
-                        <h5 class="card-title"><?php echo sanitize($dest['name']); ?></h5>
-                        <p class="card-text text-muted"><?php echo sanitize($dest['short_description']); ?></p>
-                    </div>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    </div>
-</div>
-
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<section class="hero"><div class="hero-glow hero-glow-one"></div><div class="hero-glow hero-glow-two"></div><div class="container py-5"><div class="row align-items-center g-5"><div class="col-lg-7"><div class="hero-copy"><div class="eyebrow mb-3">CULTURE · TRAVEL · AUGMENTED REALITY</div><h1>Every place has a story. <em>See it differently.</em></h1><p class="lead my-4">Point your phone at a tourism poster and unlock immersive stories, places and people.</p><a href="<?= url('ar.php') ?>" class="btn btn-warning btn-lg me-2"><i class="fa-solid fa-camera"></i> Start AR Experience</a><a href="<?= url('destinations.php') ?>" class="btn btn-outline-light btn-lg">Explore destinations</a></div></div><div class="col-lg-5 d-none d-lg-block"><div class="hero-preview"><div class="preview-top"><span class="live-dot"></span> AR EXPERIENCE <i class="fa-solid fa-ellipsis ms-auto"></i></div><div class="preview-scene"><div class="scan-frame"><i class="fa-solid fa-vr-cardboard"></i><span>Point your camera here</span></div><span class="floating-pin pin-one"><i class="fa-solid fa-landmark"></i> History</span><span class="floating-pin pin-two"><i class="fa-solid fa-mountain-sun"></i> Nature</span></div><div class="preview-bottom"><span><i class="fa-solid fa-circle-check text-warning"></i> Ready to explore</span><span>01 / 04</span></div></div></div></div></div></section>
+<section class="container stat-strip"><div class="card p-4"><div class="row text-center g-3"><div class="col-4"><strong class="fs-2"><?= count($destinations) ?>+</strong><small class="d-block text-muted">Destinations</small></div><div class="col-4"><strong class="fs-2"><?= count($attractions) ?>+</strong><small class="d-block text-muted">Experiences</small></div><div class="col-4"><strong class="fs-2">1</strong><small class="d-block text-muted">Scan to explore</small></div></div></div></section>
+<section class="container py-5"><div class="d-flex justify-content-between align-items-center mb-4"><h2 class="section-title">Featured destinations</h2><a href="<?= url('destinations.php') ?>">View all <i class="fa-solid fa-arrow-right"></i></a></div><div class="row g-4"><?php foreach ($destinations as $d): ?><div class="col-md-4"><div class="card h-100 p-4 feature-card"><span class="text-success"><i class="fa-solid fa-location-dot"></i> <?= e($d['location']) ?></span><h3 class="mt-3"><?= e($d['name']) ?></h3><p><?= e($d['short_description']) ?></p><a href="<?= url('destination.php?slug=' . urlencode($d['slug'])) ?>" class="btn btn-outline-success mt-auto">Discover</a></div></div><?php endforeach; ?></div></section>
+<section class="container pb-5"><h2 class="section-title mb-4">Popular attractions</h2><div class="row g-4"><?php foreach ($attractions as $a): ?><div class="col-md-4"><div class="card h-100"><img class="card-img-top" loading="lazy" src="<?= $a['main_image'] ? asset($a['main_image']) : asset('images/hero.svg') ?>" alt="<?= e($a['name']) ?>"><div class="card-body"><small class="text-success"><?= e($a['destination_name']) ?></small><h5><?= e($a['name']) ?></h5><p><?= e($a['short_description']) ?></p><a href="<?= url('attraction.php?slug=' . urlencode($a['slug'])) ?>" class="btn btn-sm btn-success">View details</a></div></div></div><?php endforeach; ?></div></section>
+<section class="container pb-5"><div class="discover-banner"><div><div class="eyebrow">YOUR NEXT ADVENTURE</div><h2 class="section-title mb-2">Travel with curiosity.</h2><p class="mb-0 text-white-50">Discover places, connect with culture and keep the memories.</p></div><a href="<?= url('ar.php') ?>" class="btn btn-warning">Try AR now <i class="fa-solid fa-arrow-right"></i></a></div></section>
+<?php require __DIR__ . '/includes/footer.php'; ?>

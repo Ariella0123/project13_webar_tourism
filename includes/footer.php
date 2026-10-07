@@ -1,9 +1,3 @@
-<footer class="bg-dark text-light py-4 mt-5">
-    <div class="container text-center">
-        <p class="mb-1">&copy; <?php echo date('Y'); ?> <?php echo APP_NAME; ?>. All rights reserved.</p>
-        <small class="text-muted">Powered by WebAR & MindAR Technology</small>
-    </div>
-</footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</main><footer class="site-footer text-light mt-5"><div class="container py-5"><div class="row g-4"><div class="col-lg-5"><a class="footer-brand" href="<?= url('index.php') ?>"><span class="brand-mark"><i class="fa-solid fa-vr-cardboard"></i></span><span>AR Tourism<small>EXPLORER</small></span></a><p class="text-white-50 mt-3 mb-0">Discover culture, history and unforgettable places through your camera.</p></div><div class="col-6 col-lg-2"><h6>Explore</h6><a href="<?= url('destinations.php') ?>">Destinations</a><a href="<?= url('attractions.php') ?>">Attractions</a><a href="<?= url('ar.php') ?>">AR Experience</a></div><div class="col-6 col-lg-2"><h6>Platform</h6><a href="<?= url('about.php') ?>">About us</a><a href="<?= url('admin/login.php') ?>">Admin login</a></div><div class="col-lg-3"><h6>Ready to explore?</h6><a class="btn btn-warning btn-sm mt-2" href="<?= url('ar.php') ?>">Start your AR journey <i class="fa-solid fa-arrow-right"></i></a></div></div><hr class="border-light opacity-25 my-4"><div class="d-flex justify-content-between flex-wrap gap-2 small text-white-50"><span>© <?= date('Y') ?> AR Tourism Explorer</span><span>Built for curious travellers.</span></div></div></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?= asset('js/app.js') ?>"></script></body></html>
